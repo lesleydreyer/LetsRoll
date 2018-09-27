@@ -18,31 +18,20 @@ function getGameEvents(callbackFn) {
 
 
 function saveEditGame(gameID, callbackFn) {
-    const gameTitle = $("#gameTitle").val(); //const gameTitle = $gameTitle;
-    const maxPlayers = $("#maxPlayers").val();
-    //const user = $("#username").val();
+    const gameTitle = $("#gameTitle").val();
+    const maxPlayers = $("#maxPlayers").val(); //const user = $("#username").val();
     const user = localStorage.getItem("user_id");
-    const street = $("#street").val();
-    const city = $("#city").val();
-    const state = $("#state").val();
-    const zipCode = $("#zipCode").val();
+    const address = $("#address").val();
     const gameInfo = $("#gameInfo").val();
-    const gameDate = $("#gameDate").val();
-    const gameTime = $("#gameTime").val();
+    const gameDateTime = $("#gameDateTime").val();
 
     const newGame = {
         gameTitle: gameTitle,
         maxPlayers: maxPlayers,
         user: user,
-        location: {
-            street: street,
-            city: city,
-            state: state,
-            zipCode: zipCode
-        },
+        address: address,
+        gameDateTime: new Date(gameDateTime).toISOString(),
         gameInfo: gameInfo,
-        gameDate: gameDate,
-        gameTime: gameTime
     };
     console.log('newGameput', newGame);
 
@@ -92,35 +81,28 @@ function displayGameEvent(data) {
     //let varrr = {this.gameTitle};
 }
 
-function displayGameEvents(data) {
-    $.each(data, function () { //for (index in data.gameEvents) {
-        //GET THE DATE AND TIME
-        var gameDate1 = parseInt(this.gameDate);
-        //var date2 = new Date(myDate);
-        var gameDate2 = new Date(gameDate1);
-        var date = gameDate2.getDate();
-        var month = gameDate2.getMonth(); //Be careful! January is 0 not 1
-        var year = gameDate2.getFullYear();
-        var dateString = date + "-" + (month + 1) + "-" + year;
-        var timestamp = gameDate2.getTime();
+function displayGameEvents(gameEvents) {
 
-        ////////////////
-        //Scheduled repair date: 
-        //<b>${moment(data.repairInfo[i].date).format('MMM Do YYYY')}
+    $.each(gameEvents, function (index, gameEvent) {
+        //IF user created game add user buttons
+        //$('#userButtons').append(`
+        //<button type="submit" id="editBtn" class="button">Edit Game</button>
+        //<button type="submit" id="deleteBtn" class="button">Delete Game</button>
+
 
         //IF LOGGED IN AND CREATED EVENT DO THIS
         $('.cards').append(`
-        <div id="game-summary" data-game-id="${this.id}">
+        <div id="game-summary" data-game-id="${gameEvent.id}">
             <button class="accordion">
-                ${this.gameTitle}<br/>
-                ${dateString} 
+                ${gameEvent.gameTitle}<br/>
+                ${new Date(gameEvent.gameDateTime).toLocaleDateString()} 
             </button>
             <div class="panel">
-              <p>HOST: ${this.user}</p>
-              <p>DESCRIPTION: ${this.gameInfo}</p>
-              <p>MAX PLAYERS: ${this.maxPlayers}</p>
-              <p>LOCATION: ${this.address}</p>
-              <p>TIME: ${this.gameTime}</p>
+              <p>HOST: ${gameEvent.user.username}</p>
+              <p>DESCRIPTION: ${gameEvent.gameInfo}</p>
+              <p>MAX PLAYERS: ${gameEvent.maxPlayers}</p>
+              <p>ADDRESS: ${gameEvent.address}</p>
+              <p>TIME: ${new Date(gameEvent.gameDateTime).toLocaleTimeString()}</p>
               <div id="userButtons">
                 <button type="button" id="goToEditGameBtn" class="button">Edit Game</button>
                 <button type="button"  id="deleteGameBtn">Delete Game</button>
@@ -129,10 +111,6 @@ function displayGameEvents(data) {
         </div>
         `);
 
-        //IF user created game add user buttons
-        //$('#userButtons').append(`
-        //<button type="submit" id="editBtn" class="button">Edit Game</button>
-        //<button type="submit" id="deleteBtn" class="button">Delete Game</button>
     });
 
     makeCollapsible();
@@ -168,29 +146,18 @@ function addNewGameEvent() {
     const gameTitle = $("#gameTitle").val(); //const gameTitle = $gameTitle;
     const maxPlayers = $("#maxPlayers").val();
     const user = $("#username").val();
-    const street = $("#street").val();
-    const city = $("#city").val();
-    const state = $("#state").val();
-    const zipCode = $("#zipCode").val();
+    const address = $("#address").val();
+    const gameDateTime = $("#gameDateTime").val();
     const gameInfo = $("#gameInfo").val();
-    const gameDate = $("#gameDate").val();
-    const gameTime = $("#gameTime").val();
 
     const newGame = {
         gameTitle: gameTitle,
         maxPlayers: maxPlayers,
         user: user,
-        location: {
-            street: street,
-            city: city,
-            state: state,
-            zipCode: zipCode
-        },
+        address: address,
         gameInfo: gameInfo,
-        gameDate: gameDate,
-        gameTime: gameTime
+        gameDateTime: new Date(gameDateTime).toISOString()
     };
-    console.log('newGame', newGame);
 
     $.ajax({
         headers: {
@@ -208,14 +175,11 @@ function addNewGameEvent() {
         }
     });
     event.preventDefault();
-    //})
 }
 
 function backToDashboard() {
     console.log("back to dash");
-    renderDashboard();
-
-    //window.open('../index.html', '_self'); //window.location.replace('../index.html');
+    renderDashboard(); //window.open('../index.html', '_self'); //window.location.replace('../index.html');
 }
 
 function deleteGameEvent(gameID) {
@@ -244,8 +208,6 @@ function deleteGameEvent(gameID) {
             console.error(err);
         }
     });
-    //});
-    //event.preventDefault();
 }
 
 
@@ -332,7 +294,7 @@ function login() {
         password: password
     }; //console.log(newUser);
     event.preventDefault();
-    console.log(newUser.username);
+    console.log('newUser', newUser.username);
 
     $.ajax({
         type: 'POST',
@@ -350,16 +312,14 @@ function login() {
             renderDashboard();
         }
     });
-    // });
 };
 
 
 function logout() {
-    console.log("logout clicked");
     localStorage.removeItem('authToken'); //, res.authToken);
     localStorage.removeItem('username'); //, res.user.username);
     STATE.isLoggedIn = false;
-    console.log(STATE.isLoggedIn);
+    console.log("logout clicked STATE is now " + STATE.isLoggedIn);
 }
 
 
@@ -380,10 +340,12 @@ function signup() {
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify(newUser),
-        //change to success
-        callback: user => {
-            alert(`User ${user.username} created. Please login.`) // window.open('./login.html', '_self');
+        success: res => {
+            goToLogin(res);
         },
+        //callback: user => {
+        //    alert(`User ${user.username} created. Please login.`) // window.open('./login.html', '_self');
+        //},
         //success: goToLogin,
         error: err => {
             alert('Internal Server Error (see console)');
@@ -391,11 +353,10 @@ function signup() {
         }
     });
     event.preventDefault();
-    // });
 }
 
 function goToLogin() {
-    alert(`User ${user.username} created, please login`);
+    // alert(`User ${user.username} created, please login`);
     renderLogin();
     //window.open('./login.html', '_self');
 }
@@ -407,15 +368,12 @@ function goToLogin() {
 
 function bindEvents() {
     $('#main').on('click', '#goToLoginBtn', (event) => {
-        //event.preventDefault();
         renderLogin();
     });
     $('#main').on('submit', '#js-login-form', (event) => {
-        //event.preventDefault();
         login();
     });
     $('#main').on('submit', '#js-signup-form', (event) => {
-        //event.preventDefault();
         signup();
     });
 
@@ -426,7 +384,7 @@ function bindEvents() {
         renderViewGames();
     });
 
-    $('#main').on('click', '#userAGameBtn', renderUserAGame);
+    $('#main').on('click', '#hostAGameBtn', renderHostAGame);
 
     $('#main').on('click', '#renderDashboardBtn', renderDashboard);
 
@@ -443,7 +401,7 @@ function bindEvents() {
     });
 
     $('#main').on('submit', '#js-edit-form', (event) => {
-        const gameEventId = $(event.currentTarget).closest('#game-summary').attr('data-game-id');
+        const gameEventId = $(event.currentTarget).attr('data-game-id');
         saveEditGame(gameEventId, backToDashboard);
     });
 
