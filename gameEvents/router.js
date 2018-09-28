@@ -88,6 +88,8 @@ router.put('/:id', jwtAuth, (req, res) => {
             updated[field] = req.body[field];
         }
     });
+    //updated.gameDateTime = new Date(updated.gameDateTime);
+    //var d = new Date("2015-03-25")
 
     GameEvent
         .findByIdAndUpdate(req.params.id, {
