@@ -79,9 +79,17 @@ app.use('*', (req, res) => {
 // assumes runServer has run and set `server` to a server object
 let server;
 
-function runServer() {
+function runServer(testEnv) {
+    let mongoUrl;
+
+    if (testEnv) {
+        mongoUrl = TEST_DATABASE_URL;
+    } else {
+        mongoUrl = DATABASE_URL;
+    }
+    console.log(mongoUrl)
     return new Promise((resolve, reject) => {
-        mongoose.connect(DATABASE_URL, {
+        mongoose.connect(mongoUrl, {
             useNewUrlParser: true
         }, err => {
             if (err) {

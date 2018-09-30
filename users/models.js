@@ -1,4 +1,3 @@
-'use strict';
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 
@@ -8,28 +7,27 @@ const UserSchema = mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   email: String,
   phone: String,
-  gameEvents: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "gameEvent"
-  }]
+  // gameEvents: [{
+  //  type: mongoose.Schema.Types.ObjectId,
+  //  ref: 'gameEvent',
+  // }],
 });
 
 UserSchema.methods.serialize = function () {
   return {
     username: this.username || '',
-    //firstName: this.firstName || '',
-    //lastName: this.lastName || '',
-    gameEvents: this.gameEvents,
+    // gameEvents: this.gameEvents,
     email: this.email,
-    id: this._id
+    phone: this.phone,
+    id: this._id,
   };
 };
 
@@ -44,5 +42,5 @@ UserSchema.statics.hashPassword = function (password) {
 const User = mongoose.model('User', UserSchema);
 
 module.exports = {
-  User
+  User,
 };

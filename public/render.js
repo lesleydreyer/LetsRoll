@@ -1,4 +1,4 @@
-/////////////////////  RENDERING HTML
+//------------------------------------------------------------- RENDER INTRO HOME PAGE
 
 function renderIntro() {
     let toRender = `
@@ -18,7 +18,7 @@ function renderIntro() {
     $('#main').html(toRender);
 }
 
-
+//------------------------------------------------------------- RENDER LOGIN
 
 function renderLogin() {
     let toRender = `
@@ -38,7 +38,7 @@ function renderLogin() {
     $('#main').html(toRender);
 }
 
-
+//------------------------------------------------------------- SIGNUP
 
 function renderSignup() {
     let toRender = `
@@ -52,6 +52,7 @@ function renderSignup() {
                 <input type="text" id="password" name="password" placeholder="Enter your password here" required><br />
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email" placeholder="Enter your email here" ><br />
+                <label for="phone">Phone</label>
                 <input type="text" id="phone" name="phone" placeholder="Enter your phone here" required><br />
                 <button type="submit" id="submitSignUpUserBtn" class="button">Sign Up ></button>
             </fieldset>
@@ -62,11 +63,9 @@ function renderSignup() {
 }
 
 
-
+//------------------------------------------------------------- RENDER DASHBOARD
 
 function renderDashboard(user) {
-    let username = user;
-    console.log('renderdash' + username);
     let toRender = `
     <div id="dashTop" class="fontPermMarker">LET'S ROLL!</div>
     <button id="hostAGameBtn">Host A Game</button> | <button id="viewGamesBtn">View Games</button> | <button id="logoutBtn">LOGOUT</button>
@@ -80,6 +79,7 @@ function renderDashboard(user) {
     $('#main').html(toRender);
 }
 
+//------------------------------------------------------------- RENDER NAVIGATION
 /*maybe add instead of in renderView and renderUser, etc
 function renderNavigation() {
     let toRender = `
@@ -88,7 +88,7 @@ function renderNavigation() {
     $('#nav').html(toRender);
 }*/
 
-
+//------------------------------------------------------------- RENDER VIEW GAMES
 
 function renderViewGames(gameEvents) {
 
@@ -110,7 +110,12 @@ function renderViewGames(gameEvents) {
 
 
     function gamesToHtml(gameEvent) {
-        return `
+        let userOnlyButtons = '';
+        if (gameEvent.user.id === STATE.authUser.user_id) {
+            userOnlyButtons = `<button type="button" id="goToEditGameBtn" class="button">Edit Game</button>
+                        <button type="button"  id="deleteGameBtn">Delete Game</button>`;
+        }
+        let gameHTML = `
                     <div id="game-summary" data-game-id="${gameEvent.id}">
                     <button class="accordion">
                         ${gameEvent.gameTitle}<br/>
@@ -122,13 +127,13 @@ function renderViewGames(gameEvents) {
                       <p>MAX PLAYERS: ${gameEvent.maxPlayers}</p>
                       <p>ADDRESS: ${gameEvent.address}</p>
                       <p>TIME: ${new Date(gameEvent.gameDateTime).toLocaleTimeString()}</p>
-                      <div id="userButtons">
-                        <button type="button" id="goToEditGameBtn" class="button">Edit Game</button>
-                        <button type="button"  id="deleteGameBtn">Delete Game</button>
+                      <div id="userButtons">${userOnlyButtons}
                         </div>
                     </div>
                 </div>
                     `;
+
+        return gameHTML;
     }
 
     $('#main').html(htmlfinal);
@@ -136,23 +141,28 @@ function renderViewGames(gameEvents) {
     makeCollapsible();
 }
 
-/*
-function renderViewGames22() {
-    let toRender = `
-    <div id="dashTop" class="fontPermMarker">LET'S ROLL!</div>
-    <nav role="navigation">
-    <!-- a href="#" id="renderDashboardBtn">DASHBOARD</a> | -->
 
-    <button id="hostAGameBtn">Host A Game</button> | <button id="viewGamesBtn">View Games</button> | <button id="logoutBtn">LOGOUT</button>
-    </nav>
-        <h1>View Games</h1>
-        <div class="cards">
-        </div>
-    `;
-    $('#main').html(toRender);
-}
-*/
+//------------------------------------------------------------- MAKE COLLAPSIBLE LIST
+//makes the viewing games expand/collapse to show more info
+function makeCollapsible() {
+    var acc = document.getElementsByClassName("accordion");
+    var i;
 
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        });
+    }
+};
+
+
+//------------------------------------------------------------- RENDER CREATE - HOST A GAME
 
 function renderHostAGame() {
     let toRender = `
@@ -178,7 +188,7 @@ function renderHostAGame() {
                 <input type="datetime-local" id="gameDateTime" name="gameDateTime" required><br />
 
                 <label for="gameInfo">Additional Info</label>
-                <input type="textarea" id="gameInfo" name="gameInfo" placeholder="Description of event or additional details about what to bring or whether food will be provided"><br />
+                <input type="textarea" rows="50" cols="33" maxlength="200" id="gameInfo" name="gameInfo" placeholder="Description of event or additional details about what to bring or whether food will be provided"><br />
 
                 <button type="submit" id="createBtn" class="button">Create Game > </button>
             </fieldset>
@@ -188,6 +198,8 @@ function renderHostAGame() {
 }
 
 
+
+//------------------------------------------------------------- RENDER EDIT
 
 function renderEditGame(game) {
     const date = new Date(game.gameDateTime);

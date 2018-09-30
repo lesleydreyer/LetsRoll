@@ -1,4 +1,4 @@
-//-----------------------------------------  GET ALL GAME EVENTS
+//-------------------------------------------------------------  GET ALL GAME EVENTS
 
 function getGameEvents(callbackFn) {
     $.ajax({
@@ -16,58 +16,6 @@ function getGameEvents(callbackFn) {
         }
     });
 }
-//////////////////////////////
-
-/*
-function renderViewGames(gameEvents) {
-    $.each(gameEvents, function (index, gameEvent) {
-        //IF user created game add user buttons
-        //$('#userButtons').append(`
-        //<button type="submit" id="editBtn" class="button">Edit Game</button>
-        //<button type="submit" id="deleteBtn" class="button">Delete Game</button>
-
-        //IF LOGGED IN AND CREATED EVENT DO THIS
-        $('.cards').append(`
-        <div id="game-summary" data-game-id="${gameEvent.id}">
-            <button class="accordion">
-                ${gameEvent.gameTitle}<br/>
-                ${new Date(gameEvent.gameDateTime).toLocaleDateString()} 
-            </button>
-            <div class="panel">
-              <p>HOST: ${gameEvent.user.username}</p>
-              <p>DESCRIPTION: ${gameEvent.gameInfo}</p>
-              <p>MAX PLAYERS: ${gameEvent.maxPlayers}</p>
-              <p>ADDRESS: ${gameEvent.address}</p>
-              <p>TIME: ${new Date(gameEvent.gameDateTime).toLocaleTimeString()}</p>
-              <div id="userButtons">
-                <button type="button" id="goToEditGameBtn" class="button">Edit Game</button>
-                <button type="button"  id="deleteGameBtn">Delete Game</button>
-                </div>
-            </div>
-        </div>
-        `);
-    });
-    makeCollapsible();
-}*/
-
-
-//makes the viewing games expand/collapse to show more info
-function makeCollapsible() {
-    var acc = document.getElementsByClassName("accordion");
-    var i;
-
-    for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-            }
-        });
-    }
-};
 
 
 function getAndDisplayGameEvents() {
@@ -75,7 +23,7 @@ function getAndDisplayGameEvents() {
 }
 
 
-//-----------------------------------------  GET SINGLE GAME EVENT
+//-------------------------------------------------------------  GET SINGLE GAME EVENT
 
 function getGameEvent(gameid, callbackFn) {
     $.ajax({
@@ -94,8 +42,7 @@ function getGameEvent(gameid, callbackFn) {
     });
 }
 
-
-//-----------------------------------------  EDIT GAME EVENT
+//-------------------------------------------------------------  EDIT GAME EVENT
 
 function saveEditGame(gameID) {
     const gameTitle = $("#gameTitle").val();
@@ -134,7 +81,7 @@ function saveEditGame(gameID) {
 }
 
 
-//-----------------------------------------  CREATE NEW GAME EVENT
+//-------------------------------------------------------------  CREATE NEW GAME EVENT
 
 function addNewGameEvent() {
     const gameTitle = $("#gameTitle").val();
@@ -173,7 +120,7 @@ function addNewGameEvent() {
 }
 
 
-//-----------------------------------------  DELETE GAME EVENT
+//-------------------------------------------------------------  DELETE GAME EVENT
 
 function deleteGameEvent(gameID) {
     $.ajax({
@@ -193,11 +140,11 @@ function deleteGameEvent(gameID) {
     });
 }
 
-//-----------------------------------------  ????
+//-------------------------------------------------------------  Go TO Dashboard
 
 function goToDashboard(user) {
     //    getAuthenticatedUserFromCache();
-    //updateAuthenticatedUI();
+    updateAuthenticatedUI();
     //console.log('backtodash' + user.username);
     //let username = localStorage.getItem('username');
     //console.log('aa' + aa)
@@ -205,11 +152,7 @@ function goToDashboard(user) {
 }
 
 
-
-//const store = {
-//    myToken = localStorage.getItem("token") //"";
-//store.authToken = response.authToken;
-//}
+//-------------------------------------------------------------  Authentication
 
 
 let STATE = {
@@ -228,7 +171,7 @@ function updateAuthenticatedUI() {
     //}
 }
 //////////////////////
-//////////////////////////////////
+
 /*
 if (authToken) {
     $.ajax({
@@ -252,8 +195,6 @@ if (authToken) {
     console.log('no authtoken');
     //$("#landing").removeAttr("hidden");
 }*/
-//////////////////////////////////
-/////////////////////
 
 
 function getAuthenticatedUserFromCache() {
@@ -289,6 +230,7 @@ function deleteAuthenticatedUserFromCache() {
 
 
 
+//-------------------------------------------------------------  PAGE LOAD
 
 //  on page load do this
 $(function () {
@@ -303,18 +245,7 @@ $(function () {
 
 
 
-//refresh
-//store.authToken = localStorage.setItem('authToken', response.authToken);
-
-//The simplest thing to do is to save the token to a variable, similar to your `myToken` variable. But I’d suggest using a `store` or `state` object just so you don’t pollute global.
-//`store.authToken = response.authToken`
-//Then, use that token in all the requests to the API.
-
-//f you refresh the page, then you’ll need to login again. 
-//That’s where localStorage come in. So you can store the token in localStorage like:
-//`store.authToken = localStorage.setItem('authToken', response.authToken)` and then retrieve it from local storage:
-//```headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },```
-//access login with local and that returns the token to use with jwt so send the token for game stuff
+//-------------------------------------------------------------  LOGIN
 
 function login() {
     const username = $("#username").val();
@@ -347,14 +278,18 @@ function login() {
 };
 
 
+//-------------------------------------------------------------  LOGOUT
+
 function logout() {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('username');
+    deleteAuthenticatedUserFromCache();
+    //localStorage.removeItem('authToken');
+    //localStorage.removeItem('username');
     //  localStorage.removeItem('email');
-    localStorage.removeItem('user_id');
+    //localStorage.removeItem('user_id');
     STATE.isLoggedIn = false;
 }
 
+//-------------------------------------------------------------  SIGNUP
 
 
 function signup() {
@@ -397,6 +332,7 @@ function goToLogin() {
 
 
 
+//-------------------------------------------------------------  BINDINGS
 
 
 function bindEvents() {
@@ -410,7 +346,7 @@ function bindEvents() {
 
     $('#main').on('click', '#logoutBtn', (event) => {
         logout();
-        renderIntro();
+        renderLogin(); // renderIntro();
     });
 
     $('#main').on('click', '#renderDashboardBtn', goToDashboard);

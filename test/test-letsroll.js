@@ -1,33 +1,50 @@
-/*'use strict';
-require("dotenv").config();
+'use strict';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const {createAuthToken} = require("../auth/router");
-const { app, runServer, closeServer } = require('../server');
-//const { User } = require('../users/models');
-//const { GameEvent } = require('../gameEvents/models');
-//const {seedDatabase, tearDownDb, generateEventData, preAuthUser} = require("../userSeedData.json");
-//
+const {
+    createAuthToken
+} = require("../auth/router");
+const {
+    app,
+    runServer,
+    closeServer
+} = require('../server');
+
+const {
+    User
+} = require('../users/models');
+const {
+    GameEvent
+} = require('../gameEvents/models');
 
 const expect = chai.expect;
+chai.use(chaiHttp); // implements chai http plugin
 
-chai.use(chaiHttp);
-
-
-//Add one test Add one test that verifies 
-//that when you hit up the root url for your 
-//client, you get a 200 status code and HTML.
 describe('/', function () {
-    it("should return status 200 and html code", function () {
+    before(function () {
+        return runServer(true);
+    });
+    after(function () {
+        return closeServer();
+    })
+    it("should return index.html", function () {
         return chai.request(app)
-        .get('/')
-        .then(function(res){
-            expect(res).to.have.status(200);
-            expect(res).to.be.html;
-        });
+            .get('/')
+            .then(res => {
+                debugger;
+                expect(res).to.have.status(200);
+                expect(res).to.be.html;
+                expect(res.text).to.have.string('<!DOCTYPE html');
+            })
     });
 });
+
+
+
+/*
+
+
 
 describe('GameEvent', function () {
     before(function(){return runServer();})
