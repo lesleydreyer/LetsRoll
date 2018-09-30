@@ -1,3 +1,5 @@
+//-----------------------------------------  GET ALL GAME EVENTS
+
 function getGameEvents(callbackFn) {
     $.ajax({
         headers: {
@@ -7,88 +9,22 @@ function getGameEvents(callbackFn) {
         url: '/api/gameEvents',
         contentType: 'application/json',
         dataType: 'json',
-        //data: JSON.stringify(data),
-        success: displayGameEvents,
+        success: renderViewGames,
         error: err => {
-            alert('Internal Server Error (see console)');
+            alert('Something went wrong, unable to get list of games.');
             console.error(err);
         }
     });
 }
+//////////////////////////////
 
-
-function saveEditGame(gameID, callbackFn) {
-    const gameTitle = $("#gameTitle").val();
-    const maxPlayers = $("#maxPlayers").val(); //const user = $("#username").val();
-    const user = localStorage.getItem("user_id");
-    const address = $("#address").val();
-    const gameInfo = $("#gameInfo").val();
-    const gameDateTime = $("#gameDateTime").val();
-
-    const newGame = {
-        gameTitle: gameTitle,
-        maxPlayers: maxPlayers,
-        user: user,
-        address: address,
-        gameDateTime: new Date(gameDateTime).toISOString(),
-        gameInfo: gameInfo,
-    };
-    console.log('newGameput', newGame);
-
-
-    $.ajax({
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('authToken')}`
-        },
-        type: 'PUT',
-        url: `/api/gameEvents/${gameID}`,
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify(newGame),
-        success: callbackFn,
-        error: err => {
-            alert('Internal Server Error (see console)');
-            console.error(err);
-        }
-    });
-    //localStorage.removeItem('')
-    event.preventDefault();
-}
-
-
-function getGameEvent(gameid, callbackFn) {
-    //data-game-id="${this.id}"
-
-    $.ajax({
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('authToken')}`
-        },
-        type: 'GET',
-        url: `/api/gameEvents/${gameid}`,
-        contentType: 'application/json',
-        dataType: 'json',
-        //data: JSON.stringify(data),
-        success: callbackFn,
-        error: err => {
-            alert('Internal Server Error (see console)');
-            console.error(err);
-        }
-    });
-}
-
-function displayGameEvent(data) {
-    console.log(data);
-    //let varrr = {this.gameTitle};
-}
-
-function displayGameEvents(gameEvents) {
-
+/*
+function renderViewGames(gameEvents) {
     $.each(gameEvents, function (index, gameEvent) {
         //IF user created game add user buttons
         //$('#userButtons').append(`
         //<button type="submit" id="editBtn" class="button">Edit Game</button>
         //<button type="submit" id="deleteBtn" class="button">Delete Game</button>
-
 
         //IF LOGGED IN AND CREATED EVENT DO THIS
         $('.cards').append(`
@@ -110,11 +46,9 @@ function displayGameEvents(gameEvents) {
             </div>
         </div>
         `);
-
     });
-
     makeCollapsible();
-}
+}*/
 
 
 //makes the viewing games expand/collapse to show more info
@@ -137,15 +71,74 @@ function makeCollapsible() {
 
 
 function getAndDisplayGameEvents() {
-    getGameEvents(displayGameEvents);
+    getGameEvents(renderViewGames);
 }
 
 
-function addNewGameEvent() {
-    //$('#js-create-form').on('submit', function (event) {
-    const gameTitle = $("#gameTitle").val(); //const gameTitle = $gameTitle;
+//-----------------------------------------  GET SINGLE GAME EVENT
+
+function getGameEvent(gameid, callbackFn) {
+    $.ajax({
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+        },
+        type: 'GET',
+        url: `/api/gameEvents/${gameid}`,
+        contentType: 'application/json',
+        dataType: 'json',
+        success: callbackFn,
+        error: err => {
+            alert('Internal Server Error (see console)');
+            console.error(err);
+        }
+    });
+}
+
+
+//-----------------------------------------  EDIT GAME EVENT
+
+function saveEditGame(gameID) {
+    const gameTitle = $("#gameTitle").val();
     const maxPlayers = $("#maxPlayers").val();
-    const user = $("#username").val();
+    const address = $("#address").val();
+    const gameInfo = $("#gameInfo").val();
+    const gameDateTime = $("#gameDateTime").val();
+
+    const newGame = {
+        gameTitle: gameTitle,
+        maxPlayers: maxPlayers,
+        address: address,
+        gameDateTime: new Date(gameDateTime).toISOString(),
+        gameInfo: gameInfo,
+    };
+
+    $.ajax({
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+        },
+        type: 'PUT',
+        url: `/api/gameEvents/${gameID}`,
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(newGame),
+        success: () => {
+            alert('Game has been edited successfully');
+            getAndDisplayGameEvents();
+        },
+        error: err => {
+            alert('Something went wrong, game edit NOT saved.');
+            console.error(err);
+        }
+    });
+    event.preventDefault();
+}
+
+
+//-----------------------------------------  CREATE NEW GAME EVENT
+
+function addNewGameEvent() {
+    const gameTitle = $("#gameTitle").val();
+    const maxPlayers = $("#maxPlayers").val();
     const address = $("#address").val();
     const gameDateTime = $("#gameDateTime").val();
     const gameInfo = $("#gameInfo").val();
@@ -153,7 +146,6 @@ function addNewGameEvent() {
     const newGame = {
         gameTitle: gameTitle,
         maxPlayers: maxPlayers,
-        user: user,
         address: address,
         gameInfo: gameInfo,
         gameDateTime: new Date(gameDateTime).toISOString()
@@ -168,48 +160,49 @@ function addNewGameEvent() {
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify(newGame),
-        success: backToDashboard,
+        success: () => {
+            alert(`Game event has been created!`)
+            goToDashboard();
+        },
         error: err => {
-            alert('Internal Server Error (see console)');
+            alert('Something went wrong, new game NOT created.');
             console.error(err);
         }
     });
     event.preventDefault();
 }
 
-function backToDashboard() {
-    console.log("back to dash");
-    renderDashboard(); //window.open('../index.html', '_self'); //window.location.replace('../index.html');
-}
+
+//-----------------------------------------  DELETE GAME EVENT
 
 function deleteGameEvent(gameID) {
-    //need to find id first
-    //$(".cards").on('click', '#deleteBtn', function (event) {
-    //console.log('clicked delete btn');
-    //event.stopImmediatePropagation();
-    //const gameID = $(event.currentTarget)
-    //    .closest('#game-summary').attr('data-game-id');
-    //console.log(gameID);
-
     $.ajax({
         headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`
         },
         type: 'DELETE',
-        url: `/api/gameEvents/${gameID}`, //:id'
+        url: `/api/gameEvents/${gameID}`,
         success: () => {
-            alert("deleted event");
-            renderViewGames();
+            alert("Game event has been deleted.");
             getAndDisplayGameEvents();
-            //window.open('../post/read.html', '_self');
         },
         error: err => {
-            alert('Internal Server Error (see console)');
+            alert('Something went wrong, unable to delete game.');
             console.error(err);
         }
     });
 }
 
+//-----------------------------------------  ????
+
+function goToDashboard(user) {
+    //    getAuthenticatedUserFromCache();
+    //updateAuthenticatedUI();
+    //console.log('backtodash' + user.username);
+    //let username = localStorage.getItem('username');
+    //console.log('aa' + aa)
+    renderDashboard(localStorage.getItem('username'));
+}
 
 
 
@@ -227,43 +220,85 @@ function updateAuthenticatedUI() {
     const authUser = getAuthenticatedUserFromCache();
     if (authUser) {
         STATE.authUser = authUser;
-        //console.log("state " + STATE.isLoggedIn);
+        //$('#welcomeuser').append(`Welcome, ${authUser.username}`);
     }
     //else {
     //console.log('no auth');
     //$('#default-menu').removeAttr('hidden');
     //}
 }
+//////////////////////
+//////////////////////////////////
+/*
+if (authToken) {
+    $.ajax({
+            url: "/api/auth/refresh",
+            type: "POST",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('authToken')}`
+            },
+            contentType: "application/json"
+        })
+        .then(res => {
+            STATE.token = res.authToken;
+            localStorage.setItem("authToken", res.authToken);
+            console.log('refresh');
+        })
+        .catch(err => {
+            localStorage.setItem("authToken", "");
+            //$("#landing").removeAttr("hidden");
+        });
+} else {
+    console.log('no authtoken');
+    //$("#landing").removeAttr("hidden");
+}*/
+//////////////////////////////////
+/////////////////////
 
 
 function getAuthenticatedUserFromCache() {
     const authToken = localStorage.getItem('authToken');
+    const user_id = localStorage.getItem('user_id');
     const username = localStorage.getItem('username');
+    const email = localStorage.getItem('email');
     if (authToken) {
         return {
             authToken,
-            username
+            user_id,
+            username,
+            email
         };
     } else {
         return undefined;
     }
 }
 
+function saveAuthenticatedUserIntoCache(user) {
+    localStorage.setItem('authToken', user.authToken);
+    localStorage.setItem('user_id', user.id);
+    localStorage.setItem('username', user.username);
+    localStorage.setItem('email', user.email);
+}
+
+function deleteAuthenticatedUserFromCache() {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('username');
+    localStorage.removeItem('email');
+}
+
+
+
 
 //  on page load do this
 $(function () {
-
     updateAuthenticatedUI();
     bindEvents();
-
     if (STATE.authUser) {
-        //console.log("logged in " + STATE);
-        renderDashboard();
+        goToDashboard();
     } else {
-        //console.log("not logged in " + STATE);
         renderIntro();
     };
-
 });
 
 
@@ -282,19 +317,13 @@ $(function () {
 //access login with local and that returns the token to use with jwt so send the token for game stuff
 
 function login() {
-    //$('#js-login-form').on('submit', function (event) {
-    //console.log('clicked log');
     const username = $("#username").val();
-    console.log({
-        username
-    });
     const password = $("#password").val();
     const newUser = {
         username: username,
         password: password
-    }; //console.log(newUser);
+    };
     event.preventDefault();
-    console.log('newUser', newUser.username);
 
     $.ajax({
         type: 'POST',
@@ -303,36 +332,41 @@ function login() {
         dataType: 'json',
         data: JSON.stringify(newUser),
         success: res => {
-            localStorage.setItem('authToken', res.authToken);
-            localStorage.setItem('username', newUser.username);
-            localStorage.setItem('user_id', newUser.id);
-            console.log('setitem ' + newUser.username)
-            console.log('localstorage set');
+            //localStorage.setItem('authToken', res.authToken);
+            //localStorage.setItem('username', newUser.username);
+            //localStorage.setItem('user_id', newUser.id);
+            //localStorage.setItem('email', newUser.email);
+            ////
+            const authenticatedUser = res.user;
+            authenticatedUser.authToken = res.authToken;
+            saveAuthenticatedUserIntoCache(authenticatedUser);
             STATE.isLoggedIn = true;
-            renderDashboard();
+            goToDashboard(authenticatedUser);
         }
     });
 };
 
 
 function logout() {
-    localStorage.removeItem('authToken'); //, res.authToken);
-    localStorage.removeItem('username'); //, res.user.username);
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('username');
+    //  localStorage.removeItem('email');
+    localStorage.removeItem('user_id');
     STATE.isLoggedIn = false;
-    console.log("logout clicked STATE is now " + STATE.isLoggedIn);
 }
 
 
 
 function signup() {
-    //$('#js-signup-form').on('submit', function (event) {
-    console.log('clicked signup');
     const username = $("#username").val();
     const password = $("#password").val();
-    //add more stuff later maybe
+    const email = $("#email").val();
+    const phone = $("#phone").val();
     const newUser = {
         username: username,
-        password: password
+        password: password,
+        email: email,
+        phone: phone
     };
     $.ajax({
         type: 'POST',
@@ -341,14 +375,15 @@ function signup() {
         dataType: 'json',
         data: JSON.stringify(newUser),
         success: res => {
-            goToLogin(res);
+            alert(`User ${newUser.username} created. Please login.`);
+            renderLogin(res);
         },
-        //callback: user => {
-        //    alert(`User ${user.username} created. Please login.`) // window.open('./login.html', '_self');
-        //},
-        //success: goToLogin,
         error: err => {
-            alert('Internal Server Error (see console)');
+            //myMessage = res.JSON; //JSON.stringify(err.message);
+            //console.log(err(response.JSON));
+            //window.onerror;
+            //console.error(message [, obj2, ..., objN]);
+            alert('Unable to create new user, maybe try a different name');
             console.error(err);
         }
     });
@@ -356,9 +391,7 @@ function signup() {
 }
 
 function goToLogin() {
-    // alert(`User ${user.username} created, please login`);
     renderLogin();
-    //window.open('./login.html', '_self');
 }
 
 
@@ -367,31 +400,24 @@ function goToLogin() {
 
 
 function bindEvents() {
-    $('#main').on('click', '#goToLoginBtn', (event) => {
-        renderLogin();
-    });
-    $('#main').on('submit', '#js-login-form', (event) => {
-        login();
-    });
-    $('#main').on('submit', '#js-signup-form', (event) => {
-        signup();
-    });
+    $('#main').on('click', '#goToLoginBtn', renderLogin);
+
+    $('#main').on('submit', '#js-login-form', login);
+
+    $('#main').on('submit', '#js-signup-form', signup);
 
     $('#main').on('click', '#goToSignupBtn', renderSignup);
-
-    $('#main').on('click', '#viewGamesBtn', (event) => {
-        getAndDisplayGameEvents();
-        renderViewGames();
-    });
-
-    $('#main').on('click', '#hostAGameBtn', renderHostAGame);
-
-    $('#main').on('click', '#renderDashboardBtn', renderDashboard);
 
     $('#main').on('click', '#logoutBtn', (event) => {
         logout();
         renderIntro();
     });
+
+    $('#main').on('click', '#renderDashboardBtn', goToDashboard);
+
+    $('#main').on('click', '#viewGamesBtn', getAndDisplayGameEvents);
+
+    $('#main').on('click', '#hostAGameBtn', renderHostAGame);
 
     $('#main').on('submit', '#js-create-form', addNewGameEvent);
 
@@ -402,7 +428,7 @@ function bindEvents() {
 
     $('#main').on('submit', '#js-edit-form', (event) => {
         const gameEventId = $(event.currentTarget).attr('data-game-id');
-        saveEditGame(gameEventId, backToDashboard);
+        saveEditGame(gameEventId);
     });
 
     $('#main').on('click', '#deleteGameBtn', (event) => {

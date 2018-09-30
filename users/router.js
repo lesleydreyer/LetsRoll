@@ -105,6 +105,8 @@ router.post('/', jsonParser, (req, res) => {
   let {
     username,
     password,
+    email,
+    phone
   } = req.body;
   // username and password come in pre-trimmed, otherwise we throw an error
   // before this
@@ -131,8 +133,10 @@ router.post('/', jsonParser, (req, res) => {
     .then(hash => {
       return User.create({
         username,
-        password: hash //,
-        //firstName,
+        email,
+        phone,
+        password: hash, //,
+
         //lastName
       });
     })
@@ -175,7 +179,9 @@ router.get('/:id', (req, res) => {
         //firstName: user.findById,
         //lastName: user.lastName,
         username: user.username,
-        password: user.password
+        password: user.password,
+        email: user.email,
+        phone: user.phone
       })
     }))
     .catch(err => res.status(500).json({

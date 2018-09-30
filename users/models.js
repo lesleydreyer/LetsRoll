@@ -14,6 +14,8 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  email: String,
+  phone: String,
   gameEvents: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "gameEvent"
@@ -26,6 +28,7 @@ UserSchema.methods.serialize = function () {
     //firstName: this.firstName || '',
     //lastName: this.lastName || '',
     gameEvents: this.gameEvents,
+    email: this.email,
     id: this._id
   };
 };

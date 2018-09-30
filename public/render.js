@@ -1,7 +1,4 @@
-//const datePicker = require('jquery-datepicker');
-//renderEditGame.use(datePicker);
 /////////////////////  RENDERING HTML
-
 
 function renderIntro() {
     let toRender = `
@@ -53,6 +50,9 @@ function renderSignup() {
                 <input type="text" id="username" name="username" placeholder="Enter your username here" required><br />
                 <label for="password">Password</label>
                 <input type="text" id="password" name="password" placeholder="Enter your password here" required><br />
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="Enter your email here" ><br />
+                <input type="text" id="phone" name="phone" placeholder="Enter your phone here" required><br />
                 <button type="submit" id="submitSignUpUserBtn" class="button">Sign Up ></button>
             </fieldset>
         </form>
@@ -63,16 +63,19 @@ function renderSignup() {
 
 
 
-function renderDashboard() {
+
+function renderDashboard(user) {
+    let username = user;
+    console.log('renderdash' + username);
     let toRender = `
     <div id="dashTop" class="fontPermMarker">LET'S ROLL!</div>
     <button id="hostAGameBtn">Host A Game</button> | <button id="viewGamesBtn">View Games</button> | <button id="logoutBtn">LOGOUT</button>
-    <h1>Welcome!</h1>
+    <h1 id="welcomeuser">Welcome ${user}</h1>
             <button id="viewGamesBtn" class="dashButton orange">View Games > </button>
             <!-- img tbd -->
        
             <!-- img tbd -->
-            <button id="hostAGameBtn" class="dashButton blue">User a Game > </button>
+            <button id="hostAGameBtn" class="dashButton blue">Host a Game > </button>
     `;
     $('#main').html(toRender);
 }
@@ -85,7 +88,56 @@ function renderNavigation() {
     $('#nav').html(toRender);
 }*/
 
-function renderViewGames() {
+
+
+function renderViewGames(gameEvents) {
+
+    let top = `
+        <div id="dashTop" class="fontPermMarker">LET'S ROLL!</div>
+        <nav role="navigation">
+        <!-- a href="#" id="renderDashboardBtn">DASHBOARD</a> | -->
+    
+        <button id="hostAGameBtn">Host A Game</button> | <button id="viewGamesBtn">View Games</button> | <button id="logoutBtn">LOGOUT</button>
+        </nav>
+            <h1>View Games</h1>
+            <div class="cards">`;
+
+    let bottom = `</div>`;
+
+    let gamesHtml = gameEvents.map(gamesToHtml).join('<hr/>');
+
+    let htmlfinal = top + gamesHtml + bottom;
+
+
+    function gamesToHtml(gameEvent) {
+        return `
+                    <div id="game-summary" data-game-id="${gameEvent.id}">
+                    <button class="accordion">
+                        ${gameEvent.gameTitle}<br/>
+                        ${new Date(gameEvent.gameDateTime).toLocaleDateString()} 
+                    </button>
+                    <div class="panel">
+                      <p>HOST: ${gameEvent.user.username}</p>
+                      <p>DESCRIPTION: ${gameEvent.gameInfo}</p>
+                      <p>MAX PLAYERS: ${gameEvent.maxPlayers}</p>
+                      <p>ADDRESS: ${gameEvent.address}</p>
+                      <p>TIME: ${new Date(gameEvent.gameDateTime).toLocaleTimeString()}</p>
+                      <div id="userButtons">
+                        <button type="button" id="goToEditGameBtn" class="button">Edit Game</button>
+                        <button type="button"  id="deleteGameBtn">Delete Game</button>
+                        </div>
+                    </div>
+                </div>
+                    `;
+    }
+
+    $('#main').html(htmlfinal);
+
+    makeCollapsible();
+}
+
+/*
+function renderViewGames22() {
     let toRender = `
     <div id="dashTop" class="fontPermMarker">LET'S ROLL!</div>
     <nav role="navigation">
@@ -99,6 +151,8 @@ function renderViewGames() {
     `;
     $('#main').html(toRender);
 }
+*/
+
 
 function renderHostAGame() {
     let toRender = `
@@ -133,8 +187,9 @@ function renderHostAGame() {
     $('#main').html(toRender);
 }
 
+
+
 function renderEditGame(game) {
-    //debugger;
     const date = new Date(game.gameDateTime);
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
