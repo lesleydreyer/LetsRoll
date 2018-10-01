@@ -5,12 +5,12 @@ const chaiHttp = require('chai-http');
 const faker = require('faker');
 
 const {
-  app,
-  runServer,
-  closeServer,
+    app,
+    runServer,
+    closeServer,
 } = require('../server');
 const {
-  User,
+    User,
 } = require('../users');
 
 const expect = chai.expect;
@@ -19,98 +19,96 @@ chai.use(chaiHttp); // see: https://github.com/chaijs/chai-http
 
 
 describe('/api/users', () => {
-  let testUser;
+    let testUser;
 
-  function createFakeUser() {
-    return {
-      username: `${faker.lorem.word()}${faker.random.number(100)}`,
-      password: faker.internet.password(),
-      email: faker.internet.email(),
-      phone: faker.phone.phoneNumber(),
-      // gameEvents: `${faker.lorem.word()}${faker.random.number(100)}`
-      //          email: `${faker.lorem.word()}${faker.random.number(100)}`,
-      //        phone: `${faker.lorem.word()}${faker.random.number(100)}`
-    };
-  }
+    function createFakeUser() {
+        return {
+            username: `${faker.lorem.word()}${faker.random.number(100)}`,
+            password: faker.internet.password(),
+            email: faker.internet.email(),
+            phone: faker.phone.phoneNumber(),
+            // gameEvents: `${faker.lorem.word()}${faker.random.number(100)}`
+            //          email: `${faker.lorem.word()}${faker.random.number(100)}`,
+            //        phone: `${faker.lorem.word()}${faker.random.number(100)}`
+        };
+    }
 
-  before(() => runServer(true));
-
-
-  beforeEach(() => {
-    testUser = createFakeUser();
-    return User.create(testUser)
-      .then(() => {})
-      .catch((err) => {
-        console.error(err);
-      });
-  });
+    before(() => runServer(true));
 
 
-  afterEach(() => new Promise((resolve, reject) => {
-    mongoose.connection.dropDatabase()
-      .then((result) => {
-        resolve(result);
-      })
-      .catch((err) => {
-        console.error(err);
-        reject(err);
-      });
-  }));
+    beforeEach(() => {
+        testUser = createFakeUser();
+        return User.create(testUser)
+            .then(() => {})
+            .catch((err) => {
+                console.error(err);
+            });
+    });
 
 
-  after(() => closeServer());
-
-
-  it('Should return all users', () => chai.request(app)
-    .get('/api/users')
-    .then((res) => {
-      expect(res).to.have.status(200);
-      expect(res).to.be.json;
-      expect(res.body).to.be.a('array');
-      expect(res.body).to.have.lengthOf.at.least(1);
-      expect(res.body[0]).to.include.keys('id', 'username', 'email', 'phone');
-      expect(res.body[0]).to.not.include.keys('password');
+    afterEach(() => new Promise((resolve, reject) => {
+        mongoose.connection.dropDatabase()
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((err) => {
+                console.error(err);
+                reject(err);
+            });
     }));
 
-  it('Should return a specific user', () => {
-    let foundUser;
-    debugger;
-    return chai.request(app)
-      .get('/api/users')
-      .then((res) => {
-        console.log(res.body);
-        expect(res).to.have.status(200);
-        expect(res).to.be.json;
-        expect(res.body).to.be.a('array');
-        expect(res.body).to.have.lengthOf.at.least(1);
-        foundUser = res.body[0];
-        return chai.request(app).get(`/api/users/${foundUser.id}`);
-      })
-      .then((res) => {
-        debugger;
-        // console.log(res.body); take out gameEvents from userModel for now
-        expect(res).to.have.status(200);
-        expect(res).to.be.json;
-        expect(res.body).to.be.a('object');
-        expect(res.body.id).to.equal(foundUser.id);
-      });
-  });
 
-  it('Should create a new user', () => {
-    const newUser = createFakeUser();
-    return chai.request(app)
-      .post('/api/users')
-      .send(newUser)
-      .then((res) => {
-        expect(res).to.have.status(201);
-        expect(res).to.be.json;
-        expect(res.body).to.be.a('object');
-        expect(res.body).to.include.keys('id', 'username', 'email', 'phone');
-        expect(res.body.username).to.equal(newUser.username);
-        expect(res.body.email).to.equal(newUser.email);
-        expect(res.body.phone).to.equal(newUser.phone);
-      });
-  });
+    after(() => closeServer());
+
+
+    it('Should return all users', () => chai.request(app)
+        .get('/api/users')
+        .then((res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.a('array');
+            expect(res.body).to.have.lengthOf.at.least(1);
+            expect(res.body[0]).to.include.keys('id', 'username', 'email', 'phone');
+            expect(res.body[0]).to.not.include.keys('password');
+        }));
+
+    it('Should return a specific user', () => {
+        let foundUser;
+        // debugger;
+        return chai.request(app)
+            .get('/api/users')
+            .then((res) => {
+                console.log(res.body);
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a('array');
+                expect(res.body).to.have.lengthOf.at.least(1);
+                foundUser = res.body[0];
+                return chai.request(app).get(`/api/users/${foundUser.id}`);
+            })
+            .then((res) => {
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a('object');
+                expect(res.body.id).to.equal(foundUser.id);
+            });
+    });
+
+    it('Should create a new user', () => {
+        const newUser = createFakeUser();
+        return chai.request(app)
+            .post('/api/users')
+            .send(newUser)
+            .then((res) => {
+                expect(res).to.have.status(201);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.include.keys('id', 'username', 'email', 'phone');
+                expect(res.body.username).to.equal(newUser.username);
+                expect(res.body.email).to.equal(newUser.email);
+                expect(res.body.phone).to.equal(newUser.phone);
+            });
+    });
 });
 // /////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////
