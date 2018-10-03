@@ -45,11 +45,11 @@ function getGameEvent(gameid, callbackFn) {
 //-------------------------------------------------------------  EDIT GAME EVENT
 
 function saveEditGame(gameID) {
-    const gameTitle = $("#gameTitle").val();
-    const maxPlayers = $("#maxPlayers").val();
-    const address = $("#address").val();
-    const gameInfo = $("#gameInfo").val();
-    const gameDateTime = $("#gameDateTime").val();
+    const gameTitle = $('#gameTitle').val();
+    const maxPlayers = $('#maxPlayers').val();
+    const address = $('#address').val();
+    const gameInfo = $('#gameInfo').val();
+    const gameDateTime = $('#gameDateTime').val();
 
     const newGame = {
         gameTitle: gameTitle,
@@ -84,11 +84,11 @@ function saveEditGame(gameID) {
 //-------------------------------------------------------------  CREATE NEW GAME EVENT
 
 function addNewGameEvent() {
-    const gameTitle = $("#gameTitle").val();
-    const maxPlayers = $("#maxPlayers").val();
-    const address = $("#address").val();
-    const gameDateTime = $("#gameDateTime").val();
-    const gameInfo = $("#gameInfo").val();
+    const gameTitle = $('#gameTitle').val();
+    const maxPlayers = $('#maxPlayers').val();
+    const address = $('#address').val();
+    const gameDateTime = $('#gameDateTime').val();
+    const gameInfo = $('#gameInfo').val();
 
     const newGame = {
         gameTitle: gameTitle,
@@ -108,7 +108,7 @@ function addNewGameEvent() {
         dataType: 'json',
         data: JSON.stringify(newGame),
         success: () => {
-            alert(`Game event has been created!`)
+            alert('Game event has been created!');
             goToDashboard();
         },
         error: err => {
@@ -130,7 +130,7 @@ function deleteGameEvent(gameID) {
         type: 'DELETE',
         url: `/api/gameEvents/${gameID}`,
         success: () => {
-            alert("Game event has been deleted.");
+            alert('Game event has been deleted.');
             getAndDisplayGameEvents();
         },
         error: err => {
@@ -237,10 +237,12 @@ $(function () {
     updateAuthenticatedUI();
     bindEvents();
     if (STATE.authUser) {
+        $('#main').prop('hidden', false);
         goToDashboard();
+        renderNavigation();
     } else {
         renderIntro();
-    };
+    }
 });
 
 
@@ -248,8 +250,8 @@ $(function () {
 //-------------------------------------------------------------  LOGIN
 
 function login() {
-    const username = $("#username").val();
-    const password = $("#password").val();
+    const username = $('#username').val();
+    const password = $('#password').val();
     const newUser = {
         username: username,
         password: password
@@ -275,7 +277,7 @@ function login() {
             goToDashboard(authenticatedUser);
         }
     });
-};
+}
 
 
 //-------------------------------------------------------------  LOGOUT
@@ -293,10 +295,10 @@ function logout() {
 
 
 function signup() {
-    const username = $("#username").val();
-    const password = $("#password").val();
-    const email = $("#email").val();
-    const phone = $("#phone").val();
+    const username = $('#username').val();
+    const password = $('#password').val();
+    const email = $('#email').val();
+    const phone = $('#phone').val();
     const newUser = {
         username: username,
         password: password,
@@ -325,10 +327,6 @@ function signup() {
     event.preventDefault();
 }
 
-function goToLogin() {
-    renderLogin();
-}
-
 
 
 
@@ -336,13 +334,19 @@ function goToLogin() {
 
 
 function bindEvents() {
-    $('#main').on('click', '#goToLoginBtn', renderLogin);
+    $('#main').on('click', '#goToLoginBtn', (event) => {
+        renderNavigation();
+        renderLogin();
+    });
 
     $('#main').on('submit', '#js-login-form', login);
 
     $('#main').on('submit', '#js-signup-form', signup);
 
-    $('#main').on('click', '#goToSignupBtn', renderSignup);
+    $('#main').on('click', '#goToSignupBtn', (event) => {
+        renderNavigation();
+        renderSignup();
+    });
 
     $('#main').on('click', '#logoutBtn', (event) => {
         logout();

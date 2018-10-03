@@ -35,15 +35,21 @@ body {
   font-family: 'Josefin Sans', sans-serif;
   line-height: 1.3em;
   letter-spacing: .5px;
-  /*  width: 75vw;*/
+  width: 75vw;
+  margin: 0 auto;
 }
 
 .center {
   text-align: center;
+  margin: 0 auto;
 }
 
 .redColor {
   color: #E24B3B;
+}
+
+.redBackColor {
+  background-color: #E24B3B;
 }
 
 .blueColor {
@@ -87,13 +93,44 @@ body {
   -o-transform: scale(1, 1.5);
 }
 
-/*
+
 .imgIntro {
-  width: 50%;
+  width: 100%;
   height: auto;
-  object-fit: fill;
 }
 
+.inline {
+  display: inline-block;
+}
+
+#dmbook {
+  vertical-align: baseline;
+}
+
+.hostAGameBtn {
+  bottom: 50px;
+  display: block;
+  position: relative;
+  display: inline-flex;
+  /* keep the inline nature of buttons */
+  align-items: flex-start;
+  /* this is default */
+}
+
+#viewGamesBtn {
+  display: inline-flex;
+  /* keep the inline nature of buttons */
+  align-items: flex-start;
+  /* this is default */
+  top: 500px;
+}
+
+#gameshelf {
+  vertical-align: text-top;
+  top: 500px;
+}
+
+/*
 .tiles {
   object-fit: contain;
 }*/
@@ -115,6 +152,19 @@ button:hover {
   border-color: currentColor;
 }
 
+.dashButton:hover {
+  color: #ccc;
+  border-color: currentColor;
+}
+
+
+.navBtns {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-weight: 400;
+  font-size: 80%;
+}
+
 
 p {
   font-size: 80%;
@@ -129,13 +179,7 @@ p {
   width: 100%;
 }
 
-input {
-  border-bottom: 1px solid #E24B3B;
-  border-left: 3px solid #E24B3B;
-  border-top: 0px;
-  padding: 5px;
-  margin: 5px;
-}
+
 
 
 lh {
@@ -190,4 +234,48 @@ li {
   width: 100px;
   height: 100px;
   display: block;
+}
+
+
+
+
+
+fieldset {
+  border: 0;
+}
+
+form {
+  background-color: white;
+  min-height: 200px;
+  width: 400px;
+  margin-top: 20px;
+
+}
+
+legend,
+.legend {
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: 150%;
+  margin-bottom: 20px;
+}
+
+
+input {
+  border-bottom: 1px solid #E24B3B;
+  border-left: 4px solid #E24B3B;
+  border-top: 0px;
+  padding: 5px;
+  margin: 5px auto 20px;
+  text-align: center;
+}
+
+.blueborder {
+  border-bottom: 1px solid #00959C;
+  border-left: 4px solid #00959C;
+}
+
+.smallBtn {
+  font-weight: 400;
+  font-size: 70%;
 }

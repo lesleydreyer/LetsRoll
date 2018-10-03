@@ -2,27 +2,12 @@
 
 function renderIntro() {
     let toRender = `
-    <div class="row">
-  <div class="column left" style="background-color:#aaa;">
-    <h2>Column 1</h2>
-    <p>Some text..</p>
-  </div>
-  <div class="column middle" style="background-color:#bbb;">
-    <h2>Column 2</h2>
-    <p>Some text..</p>
-  </div>
-  <div class="column right" style="background-color:#ccc;">
-    <h2>Column 3</h2>
-    <p>Some text..</p>
-  </div>
-</div>`;
-    let toRender2 = `
-    <div class="row">
+    <div class="row" role="banner">
         <div class="column left">
-            <img src="images/starttiles.svg" class="tiles"/>
+            <img src="images/starttiles.svg" class="tiles" alt="picture of game tiles"/>
         </div>
         <div class="intro center column middle">
-            <img src="images/img1.svg" class="imgIntro">
+            <img src="images/img1.svg" class="imgIntro" alt="picture of flinging dice onto boardgame">
             <h1 class="redColor center fontPermMarker">LET'S ROLL</h1>
             <h3 class="blueColor center fontJosefinSans">TABLETOP SCHEDULER</h3>
             <p>Play more board games (or anything else) with Let's Roll tabletop scheduler! The app is still in
@@ -35,30 +20,30 @@ function renderIntro() {
                 &nbsp;&nbsp;
                 <button class="homebuttons" id="goToSignupBtn">SIGN UP > </button>
             </p>
-        </div
+        </div>
         <div class="column right">
-            <img src="images/finishtiles.svg" class="tiles"/>
+            <img src="images/finishtiles.svg" class="tiles" alt="picture of game tiles"/>
         </div>
     </div>`;
-    $('#main').html(toRender2);
+    $('#main').html(toRender);
 }
 
 //------------------------------------------------------------- RENDER LOGIN
 
 function renderLogin() {
     let toRender = `
-    <h1>Log In</h1>
         <form id="js-login-form" role="login">
             <fieldset>
                 <legend>Log In</legend>
-                <label for="username">User Name</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username here" required><br />
-                <label for="password">Password</label>
-                <input type="text" id="password" name="password" placeholder="Enter your password here" required><br />
-                <button type="submit" id="logInBtn" class="button">Log In > </button>
+                <label for="username">User Name</label><br/>
+                <input type="text" id="username" name="username" placeholder="Enter your username here" required><br /><br/>
+                <label for="password">Password</label><br/>
+                <input class="blueborder" type="text" id="password" name="password" placeholder="Enter your password here" required><br />
+                <button type="submit" id="logInBtn" class="button">Log In > </button><br/><br/>
+                <button class="smallBtn" id="goToSignupBtn">Or Sign Up Here > </button>
             </fieldset>
         </form>
-        <p><button id="goToSignupBtn">Or Sign Up Here > </button></p>
+        <img src="images/dice.svg" class="dice" alt="picture of dice"/>
     `;
     $('#main').html(toRender);
 }
@@ -67,22 +52,22 @@ function renderLogin() {
 
 function renderSignup() {
     let toRender = `
-    <h1>Sign Up</h1>
         <form id="js-signup-form" role="signup">
             <fieldset>
                 <legend>Sign Up</legend>
-                <label for="username">User Name</label>
+                <label for="username">User Name</label><br/>
                 <input type="text" id="username" name="username" placeholder="Enter your username here" required><br />
-                <label for="password">Password</label>
-                <input type="text" id="password" name="password" placeholder="Enter your password here" required><br />
-                <label for="email">Email</label>
+                <label for="password">Password</label><br/>
+                <input class="blueborder" type="text" id="password" name="password" placeholder="Enter your password here" required><br />
+                <label for="email">Email</label><br/>
                 <input type="text" id="email" name="email" placeholder="Enter your email here" ><br />
-                <label for="phone">Phone</label>
-                <input type="text" id="phone" name="phone" placeholder="Enter your phone here" required><br />
-                <button type="submit" id="submitSignUpUserBtn" class="button">Sign Up ></button>
+                <label for="phone">Phone</label><br/>
+                <input class="blueborder" type="text" id="phone" name="phone" placeholder="Enter your phone here" required><br />
+                <button type="submit" id="submitSignUpUserBtn" class="button">Sign Up ></button><br/><br/>
+                <button class="smallBtn" id="goToLoginBtn">Or Log in Here > </button>
             </fieldset>
         </form>
-        <p><button id="goToLoginBtn">Or Log in Here > </button></p>
+        <img src="images/dice.svg" class="dice" alt="picture of dice"/>
     `;
     $('#main').html(toRender);
 }
@@ -92,39 +77,44 @@ function renderSignup() {
 
 function renderDashboard(user) {
     let toRender = `
-    <div id="dashTop" class="fontPermMarker">LET'S ROLL!</div>
-    <button id="hostAGameBtn">Host A Game</button> | <button id="viewGamesBtn">View Games</button> | <button id="logoutBtn">LOGOUT</button>
-    <h1 id="welcomeuser">Welcome ${user}</h1>
-            <button id="viewGamesBtn" class="dashButton orange">View Games > </button>
-            <!-- img tbd -->
-       
-            <!-- img tbd -->
-            <button id="hostAGameBtn" class="dashButton blue">Host a Game > </button>
+    <h1 class="legend" id="welcomeuser">Welcome ${user}</h1>
+    <div>
+        <div class="inline">
+            <button id="viewGamesBtn" class="dashButton redBackColor">View Games > </button>
+        </div>
+        <div class="inline">
+            <img src="images/gameshelf.svg" id="gameshelf" alt="picture of guy looking at game shelf" />
+        </div>
+    </div></div>
+    <div class="row2">
+    <div class="inline">
+            <img src="images/dmbook.svg" class="inline" alt="picture of guy holding dm screen"/>
+        </div>
+        <div class="inline">
+            <button id="hostAGameBtn" class="dashButton blue hostAGameBtn">Host a Game > </button>
+        </div>
+    </div></div>
     `;
     $('#main').html(toRender);
 }
 
 //------------------------------------------------------------- RENDER NAVIGATION
-/*maybe add instead of in renderView and renderUser, etc
+
 function renderNavigation() {
     let toRender = `
-    <a href="#" id="renderDashboardBtn">DASHBOARD</a> | <a href="#" id="hostAGameBtn">Host A Game</a> | <a href="#" id="viewGamesBtn">View Games</a>
+        <div id="dashTop" class="fontPermMarker">&nbsp;LET'S ROLL!</div>
+        <button id="hostAGameBtn" class="navBtns">Host A Game</button> | <button id="viewGamesBtn" class="navBtns">View Games</button> | <button id="logoutBtn" class="navBtns">LOGOUT</button>
     `;
     $('#nav').html(toRender);
-}*/
+}
 
 //------------------------------------------------------------- RENDER VIEW GAMES
 
 function renderViewGames(gameEvents) {
 
     let top = `
-        <div id="dashTop" class="fontPermMarker">LET'S ROLL!</div>
-        <nav role="navigation">
-        <!-- a href="#" id="renderDashboardBtn">DASHBOARD</a> | -->
-    
-        <button id="hostAGameBtn">Host A Game</button> | <button id="viewGamesBtn">View Games</button> | <button id="logoutBtn">LOGOUT</button>
-        </nav>
-            <h1>View Games</h1>
+
+            <h1 class="legend">View Games</h1>
             <div class="cards">`;
 
     let bottom = '</div>';
@@ -191,29 +181,24 @@ function makeCollapsible() {
 
 function renderHostAGame() {
     let toRender = `
-    <div id="dashTop" class="fontPermMarker">LET'S ROLL!</div>
-    <nav role="navigation" id="nav"> <!-- a href="#" id="renderDashboardBtn">DASHBOARD</a> | -->
-    <button id="hostAGameBtn">Host A Game</button> | <button id="viewGamesBtn">View Games</button> | <button id="logoutBtn">LOGOUT</button>
-    </nav>
-        <h1>Create Your Game</h1>
         <form id="js-create-form" role="create">
             <fieldset>
                 <legend>Host a Game</legend>
 
-                <label for="gameTitle">Game Title</label>
-                <input type="text" id="gameTitle" name="gameTitle" placeholder="Monopoly" required><br />
+                <label for="gameTitle">Game Title</label><br/>
+                <input class="blueborder" type="text" id="gameTitle" name="gameTitle" placeholder="Monopoly" required><br />
 
-                <label for="maxPlayers">Maximum Players</label>
+                <label for="maxPlayers">Maximum Players</label><br/>
                 <input type="number" id="maxPlayers" name="maxPlayers" placeholder="6" required><br />
 
-                <label for="address">Address</label>
-                <input type="address" id="address" name="address" placeholder="123 Main St" required><br />
+                <label for="address">Address</label><br/>
+                <input class="blueborder" type="address" id="address" name="address" placeholder="123 Main St" required><br />
 
-                <label for="gameDateTime">Date</label>
+                <label for="gameDateTime">Date</label><br/>
                 <input type="datetime-local" id="gameDateTime" name="gameDateTime" required><br />
 
-                <label for="gameInfo">Additional Info</label>
-                <input type="textarea" rows="50" cols="33" maxlength="200" id="gameInfo" name="gameInfo" placeholder="Description of event or additional details about what to bring or whether food will be provided"><br />
+                <label for="gameInfo">Additional Info</label><br/>
+                <input class="blueborder" type="textarea" rows="50" cols="33" maxlength="200" id="gameInfo" name="gameInfo" placeholder="Description of event or additional details about what to bring or whether food will be provided"><br />
 
                 <button type="submit" id="createBtn" class="button">Create Game > </button>
             </fieldset>
@@ -249,29 +234,24 @@ function renderEditGame(game) {
 
 
     let toRender = `
-    <div id="dashTop" class="fontPermMarker">LET'S ROLL!</div>
-    <nav role="navigation" id="nav"> <!-- a href="#" id="renderDashboardBtn">DASHBOARD</a> | -->
-    <button id="hostAGameBtn">Host A Game</button> | <button id="viewGamesBtn">View Games</button> | <button id="logoutBtn">LOGOUT</button>
-    </nav>
-        <h1>Edit Your Game</h1>
         <form id="js-edit-form" role="create" data-game-id="${game.id}">
             <fieldset>
                 <legend>Edit Your Game</legend>
 
-                <label for="gameTitle">Game Title</label>
-                <input type="text" id="gameTitle" name="gameTitle" value="${game.gameTitle}" required><br/>
+                <label for="gameTitle">Game Title</label><br/>
+                <input class="blueborder" type="text" id="gameTitle" name="gameTitle" value="${game.gameTitle}" required><br/>
 
-                <label for="maxPlayers">Maximum Players</label>
+                <label for="maxPlayers">Maximum Players</label><br/>
                 <input type="number" id="maxPlayers" name="maxPlayers" value="${game.maxPlayers}" required><br />
 
-                <label for="address">Street</label>
-                <input type="address" id="address" name="address" value="${game.address}" required><br />
+                <label for="address">Street</label><br/>
+                <input class="blueborder" type="address" id="address" name="address" value="${game.address}" required><br />
 
                 <label for="gameDateTime">Date & Time</label>
                 <input type="datetime-local" id="gameDateTime" name="gameDateTime" value="${formattedDate}" required><br />
 
-                <label for="gameInfo">Additional Info</label>
-                <input type="textarea" id="gameInfo" name="gameInfo" value="${game.gameInfo}"><br />
+                <label for="gameInfo">Additional Info</label><br/>
+                <input class="blueborder" type="textarea" id="gameInfo" name="gameInfo" value="${game.gameInfo}"><br />
 
                 <button type="submit" id="saveEditGameBtn" class="button">Save Game > </button>
             </fieldset>
