@@ -2,20 +2,45 @@
 
 function renderIntro() {
     let toRender = `
-    <img src="images/img1.svg">
-<h1 class="redColor center fontPermMarker">LET'S ROLL</h1>
-<h3 class="blueColor center fontJosefinSans">TABLETOP SCHEDULER</h3>
-<p>Play more board games (or anything else) with Let's Roll tabletop scheduler! The app is still in
-    production but when complete you will be able to user a game session as well as sign up to attend other
-    users games, add comments, and connect to the board game geek api to grab more info on the games you
-    would like to play.</p>
-<p>
-    <button class="homebuttons" id="goToLoginBtn">LOG IN > </button>
-    &nbsp;&nbsp;<span class="blueColor btnslash">|</span>
-    &nbsp;&nbsp;
-    <button class="homebuttons" id="goToSignupBtn">SIGN UP > </button>
-</p>`;
-    $('#main').html(toRender);
+    <div class="row">
+  <div class="column left" style="background-color:#aaa;">
+    <h2>Column 1</h2>
+    <p>Some text..</p>
+  </div>
+  <div class="column middle" style="background-color:#bbb;">
+    <h2>Column 2</h2>
+    <p>Some text..</p>
+  </div>
+  <div class="column right" style="background-color:#ccc;">
+    <h2>Column 3</h2>
+    <p>Some text..</p>
+  </div>
+</div>`;
+    let toRender2 = `
+    <div class="row">
+        <div class="column left">
+            <img src="images/starttiles.svg" class="tiles"/>
+        </div>
+        <div class="intro center column middle">
+            <img src="images/img1.svg" class="imgIntro">
+            <h1 class="redColor center fontPermMarker">LET'S ROLL</h1>
+            <h3 class="blueColor center fontJosefinSans">TABLETOP SCHEDULER</h3>
+            <p>Play more board games (or anything else) with Let's Roll tabletop scheduler! The app is still in
+                production but when complete you will be able to user a game session as well as sign up to attend other
+                users games, add comments, and connect to the board game geek api to grab more info on the games you
+                would like to play.</p>
+            <p>
+                <button class="homebuttons" id="goToLoginBtn">LOG IN > </button>
+                &nbsp;&nbsp;<span class="blueColor btnslash">|</span>
+                &nbsp;&nbsp;
+                <button class="homebuttons" id="goToSignupBtn">SIGN UP > </button>
+            </p>
+        </div
+        <div class="column right">
+            <img src="images/finishtiles.svg" class="tiles"/>
+        </div>
+    </div>`;
+    $('#main').html(toRender2);
 }
 
 //------------------------------------------------------------- RENDER LOGIN
@@ -102,7 +127,7 @@ function renderViewGames(gameEvents) {
             <h1>View Games</h1>
             <div class="cards">`;
 
-    let bottom = `</div>`;
+    let bottom = '</div>';
 
     let gamesHtml = gameEvents.map(gamesToHtml).join('<hr/>');
 
@@ -145,21 +170,21 @@ function renderViewGames(gameEvents) {
 //------------------------------------------------------------- MAKE COLLAPSIBLE LIST
 //makes the viewing games expand/collapse to show more info
 function makeCollapsible() {
-    var acc = document.getElementsByClassName("accordion");
+    var acc = document.getElementsByClassName('accordion');
     var i;
 
     for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function () {
-            this.classList.toggle("active");
+        acc[i].addEventListener('click', function () {
+            this.classList.toggle('active');
             var panel = this.nextElementSibling;
             if (panel.style.maxHeight) {
                 panel.style.maxHeight = null;
             } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
+                panel.style.maxHeight = panel.scrollHeight + 'px';
             }
         });
     }
-};
+}
 
 
 //------------------------------------------------------------- RENDER CREATE - HOST A GAME
@@ -206,20 +231,20 @@ function renderEditGame(game) {
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     if (month < 10) {
-        month = `0${month}`
-    };
+        month = `0${month}`;
+    }
     let day = date.getDate();
     if (day < 10) {
-        day = `0${day}`
-    };
+        day = `0${day}`;
+    }
     let hours = date.getHours();
     if (hours < 10) {
-        hours = `0${hours}`
-    };
+        hours = `0${hours}`;
+    }
     let minutes = date.getMinutes();
     if (minutes < 10) {
-        minutes = `0${minutes}`
-    };
+        minutes = `0${minutes}`;
+    }
     let formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
 
 
