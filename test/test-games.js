@@ -89,10 +89,6 @@ describe('Integration tests for: /api/gameEvents', () => {
     }));
 
     after(() =>
-        // Be sure to always return a promise to Mocha when doing asynchronous work,
-        // Otherwise Mocha will just asume your work is done even if it isn't.
-
-        // Shuts down our Express Server, since we don't need it anymore.
         closeServer()
     );
 

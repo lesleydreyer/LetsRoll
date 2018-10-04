@@ -112,7 +112,6 @@ function renderNavigation() {
 function renderViewGames(gameEvents) {
 
     let top = `
-
             <h1 class="legend">View Games</h1>
             <div class="cards">`;
 

@@ -2,13 +2,10 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-mongoose.set('useCreateIndex', true)
+mongoose.set('useCreateIndex', true);
 const morgan = require('morgan');
 const passport = require('passport');
 
-// Can use destructuring with renaming so two variables called router (from ./users and ./auth) have different names
-// For example: const actorSurnames = { james: "Stewart", robert: "De Niro" }; const { james: jimmy, robert: bobby } = actorSurnames;
-// console.log(jimmy); // Stewart - the variable name is jimmy, not james // console.log(bobby); // De Niro - the variable name is bobby, not robert
 const {
     router: usersRouter
 } = require('./users');
@@ -30,13 +27,11 @@ const {
 } = require('./config');
 
 const app = express();
-app.use(express.json()); // Required so AJAX request JSON data payload can be parsed and saved into request.body
-//app.use(express.static('./public')); // Intercepts all HTTP requests that match files inside /public
-app.use(express.static('public'));
+app.use(express.json()); //Required so AJAX request JSON data payload can be parsed and saved into request.body
+app.use(express.static('public')); // Intercepts all HTTP requests that match files inside /public
 app.use(morgan('common')); // Logging
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: false }));
 
 // CORS
 app.use(function (req, res, next) {
@@ -87,7 +82,7 @@ function runServer(testEnv) {
     } else {
         mongoUrl = DATABASE_URL;
     }
-    console.log(mongoUrl)
+    console.log(mongoUrl);
     return new Promise((resolve, reject) => {
         mongoose.connect(mongoUrl, {
             useNewUrlParser: true

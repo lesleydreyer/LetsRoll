@@ -163,38 +163,9 @@ function updateAuthenticatedUI() {
     const authUser = getAuthenticatedUserFromCache();
     if (authUser) {
         STATE.authUser = authUser;
-        //$('#welcomeuser').append(`Welcome, ${authUser.username}`);
+        STATE.isLoggedIn = true;
     }
-    //else {
-    //console.log('no auth');
-    //$('#default-menu').removeAttr('hidden');
-    //}
 }
-//////////////////////
-
-/*
-if (authToken) {
-    $.ajax({
-            url: "/api/auth/refresh",
-            type: "POST",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('authToken')}`
-            },
-            contentType: "application/json"
-        })
-        .then(res => {
-            STATE.token = res.authToken;
-            localStorage.setItem("authToken", res.authToken);
-            console.log('refresh');
-        })
-        .catch(err => {
-            localStorage.setItem("authToken", "");
-            //$("#landing").removeAttr("hidden");
-        });
-} else {
-    console.log('no authtoken');
-    //$("#landing").removeAttr("hidden");
-}*/
 
 
 function getAuthenticatedUserFromCache() {
@@ -234,6 +205,7 @@ function deleteAuthenticatedUserFromCache() {
 
 //  on page load do this
 $(function () {
+    debugger;
     updateAuthenticatedUI();
     bindEvents();
     if (STATE.authUser) {
@@ -265,16 +237,16 @@ function login() {
         dataType: 'json',
         data: JSON.stringify(newUser),
         success: res => {
-            //localStorage.setItem('authToken', res.authToken);
-            //localStorage.setItem('username', newUser.username);
-            //localStorage.setItem('user_id', newUser.id);
-            //localStorage.setItem('email', newUser.email);
-            ////
             const authenticatedUser = res.user;
             authenticatedUser.authToken = res.authToken;
             saveAuthenticatedUserIntoCache(authenticatedUser);
             STATE.isLoggedIn = true;
             goToDashboard(authenticatedUser);
+            renderNavigation();
+        },
+        error: err => {
+            alert('Unable to login, sign up first');
+            console.error(err);
         }
     });
 }
@@ -335,7 +307,6 @@ function signup() {
 
 function bindEvents() {
     $('#main').on('click', '#goToLoginBtn', (event) => {
-        renderNavigation();
         renderLogin();
     });
 
@@ -344,20 +315,22 @@ function bindEvents() {
     $('#main').on('submit', '#js-signup-form', signup);
 
     $('#main').on('click', '#goToSignupBtn', (event) => {
-        renderNavigation();
         renderSignup();
     });
 
-    $('#main').on('click', '#logoutBtn', (event) => {
+    $('#nav').on('click', '#logoutBtn', (event) => {
         logout();
-        renderLogin(); // renderIntro();
+        renderLogin();
+        $('#nav').html('');
     });
 
     $('#main').on('click', '#renderDashboardBtn', goToDashboard);
 
     $('#main').on('click', '#viewGamesBtn', getAndDisplayGameEvents);
+    $('#nav').on('click', '#viewGamesBtn', getAndDisplayGameEvents);
 
     $('#main').on('click', '#hostAGameBtn', renderHostAGame);
+    $('#nav').on('click', '#hostAGameBtn', renderHostAGame);
 
     $('#main').on('submit', '#js-create-form', addNewGameEvent);
 
