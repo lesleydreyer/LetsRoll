@@ -10,10 +10,9 @@ function renderIntro() {
             <img src="images/img1.svg" class="imgIntro" alt="picture of flinging dice onto boardgame">
             <h1 class="redColor center fontPermMarker">LET'S ROLL</h1>
             <h3 class="blueColor center fontJosefinSans">TABLETOP SCHEDULER</h3>
-            <p>Play more board games (or anything else) with Let's Roll tabletop scheduler! The app is still in
-                production but when complete you will be able to user a game session as well as sign up to attend other
+            <p>Play more board games (or anything else) with Let's Roll tabletop scheduler! Currently you can view games and host a game session. Eventually I would like to add the ability to sign up to attend other
                 users games, add comments, and connect to the board game geek api to grab more info on the games you
-                would like to play.</p>
+                would like to play, as well as improve the CSS to match the mockups better.</p>
             <p>
                 <button class="homebuttons" id="goToLoginBtn">LOG IN > </button>
                 &nbsp;&nbsp;<span class="blueColor btnslash">|</span>
