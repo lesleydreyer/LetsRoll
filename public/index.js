@@ -1,3 +1,5 @@
+'use strict';
+
 //-------------------------------------------------------------  GET ALL GAME EVENTS
 
 function getGameEvents(callbackFn) {
@@ -142,12 +144,8 @@ function deleteGameEvent(gameID) {
 
 //-------------------------------------------------------------  Go TO Dashboard
 
-function goToDashboard(user) {
-    //    getAuthenticatedUserFromCache();
-    updateAuthenticatedUI();
-    //console.log('backtodash' + user.username);
-    //let username = localStorage.getItem('username');
-    //console.log('aa' + aa)
+function goToDashboard() {
+    updateAuth();
     renderDashboard(localStorage.getItem('username'));
 }
 
@@ -159,7 +157,7 @@ let STATE = {
     isLoggedIn: false
 };
 
-function updateAuthenticatedUI() {
+function updateAuth() {
     const authUser = getAuthenticatedUserFromCache();
     if (authUser) {
         STATE.authUser = authUser;
@@ -200,25 +198,6 @@ function deleteAuthenticatedUserFromCache() {
 }
 
 
-
-//-------------------------------------------------------------  PAGE LOAD
-
-//  on page load do this
-$(function () {
-    debugger;
-    updateAuthenticatedUI();
-    bindEvents();
-    if (STATE.authUser) {
-        $('#main').prop('hidden', false);
-        goToDashboard();
-        renderNavigation();
-    } else {
-        renderIntro();
-    }
-});
-
-
-
 //-------------------------------------------------------------  LOGIN
 
 function login() {
@@ -256,10 +235,6 @@ function login() {
 
 function logout() {
     deleteAuthenticatedUserFromCache();
-    //localStorage.removeItem('authToken');
-    //localStorage.removeItem('username');
-    //  localStorage.removeItem('email');
-    //localStorage.removeItem('user_id');
     STATE.isLoggedIn = false;
 }
 
@@ -288,19 +263,27 @@ function signup() {
             renderLogin(res);
         },
         error: err => {
-            //myMessage = res.JSON; //JSON.stringify(err.message);
-            //console.log(err(response.JSON));
-            //window.onerror;
-            //console.error(message [, obj2, ..., objN]);
             alert('Unable to create new user, maybe try a different name');
             console.error(err);
         }
     });
     event.preventDefault();
 }
+//-------------------------------------------------------------  PAGE LOAD
 
+$(document).ready(onPageLoad);
 
-
+function onPageLoad() {
+    updateAuth();
+    bindEvents();
+    if (STATE.authUser) {
+        $('#main').prop('hidden', false);
+        goToDashboard();
+        renderNavigation();
+    } else {
+        renderIntro();
+    }
+}
 
 //-------------------------------------------------------------  BINDINGS
 
@@ -320,7 +303,7 @@ function bindEvents() {
 
     $('#nav').on('click', '#logoutBtn', (event) => {
         logout();
-        renderLogin();
+        renderIntro();
         $('#nav').html('');
     });
 

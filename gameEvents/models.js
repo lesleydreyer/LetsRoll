@@ -1,3 +1,5 @@
+'use strict';
+
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -54,7 +56,7 @@ gameEventSchema.methods.serialize = function () {
         address: this.address,
         gameInfo: this.gameInfo
     };
-}
+};
 
 const GameEvent = mongoose.model('GameEvent', gameEventSchema);
 

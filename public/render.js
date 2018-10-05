@@ -1,3 +1,5 @@
+'use strict';
+
 //------------------------------------------------------------- RENDER INTRO HOME PAGE
 
 function renderIntro() {
