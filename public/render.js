@@ -2,14 +2,19 @@
 
 function renderIntro() {
     let toRender = `
-    <div class="row" role="banner">
+    <div class="wrapper">
+    <div class="row">
         <div class="column left">
-            <img src="images/starttiles.svg" class="tiles" alt="picture of game tiles"/>
+            <div class="starttiles">
+                <img src="images/starttiles3.svg" class="tiles" alt="picture of game tiles"/>
+            </div>
         </div>
         <div class="intro center column middle">
-            <img src="images/img1.svg" class="imgIntro" alt="picture of flinging dice onto boardgame">
-            <h1 class="redColor center fontPermMarker">LET'S ROLL</h1>
-            <h3 class="blueColor center fontJosefinSans">TABLETOP SCHEDULER</h3>
+            <header role="banner">
+                <img src="images/img1.svg" class="imgIntro " alt="picture of flinging dice onto boardgame">
+                <h1 class="redColor center fontPermMarker">LET'S ROLL</h1>
+                <h3 class="blueColor center fontJosefinSans">TABLETOP SCHEDULER</h3>
+            </header>
             <p>Play more board games (or anything else) with Let's Roll tabletop scheduler! Currently you can view games and host a game session. Eventually I would like to add the ability to sign up to attend other
                 users games, add comments, and connect to the board game geek api to grab more info on the games you
                 would like to play, as well as improve the CSS to match the mockups better.</p>
@@ -21,7 +26,8 @@ function renderIntro() {
             </p>
         </div>
         <div class="column right">
-            <img src="images/finishtiles.svg" class="tiles" alt="picture of game tiles"/>
+            <img src="images/finishtiles3.svg" class="tiles" alt="picture of game tiles"/>
+        </div>
         </div>
     </div>`;
     $('#main').html(toRender);
@@ -42,7 +48,7 @@ function renderLogin() {
                 <button class="smallBtn" id="goToSignupBtn">Or Sign Up Here > </button>
             </fieldset>
         </form>
-        <img src="images/dice.svg" class="dice" alt="picture of dice"/>
+        <!--might add later <img src="images/dice.svg" class="dice" alt="picture of dice"/>-->
     `;
     $('#main').html(toRender);
 }
@@ -66,7 +72,7 @@ function renderSignup() {
                 <button class="smallBtn" id="goToLoginBtn">Or Log in Here > </button>
             </fieldset>
         </form>
-        <img src="images/dice.svg" class="dice" alt="picture of dice"/>
+        <!--might add later<img src="images/dice.svg" class="dice" alt="picture of dice"/>-->
     `;
     $('#main').html(toRender);
 }

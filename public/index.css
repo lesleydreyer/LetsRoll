@@ -15,29 +15,34 @@ html {
 }
 
 
-/*
-.gametile {
-  object-fit: contain;
-  max-width: 100%;
-  max-height: 100%;
-}
-
- If the screen size is 600px wide or less, hide the element 
-@media screen and (max-width: 500px) {
-  .gametile {
-    display: none;
-  }
-}*/
-
-
 body {
-  font-family: 'Montserrat', sans-serif;
+  /*font-family: 'Montserrat', sans-serif;*/
   font-family: 'Josefin Sans', sans-serif;
   line-height: 1.3em;
   letter-spacing: .5px;
-  width: 75vw;
   margin: 0 auto;
 }
+
+.dice {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+#main {
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 50%;
+  background-color: white;
+}
+
+#nav {
+  margin: 0 auto;
+  text-align: center;
+}
+
 
 .center {
   text-align: center;
@@ -112,16 +117,12 @@ body {
   display: block;
   position: relative;
   display: inline-flex;
-  /* keep the inline nature of buttons */
   align-items: flex-start;
-  /* this is default */
 }
 
 #viewGamesBtn {
   display: inline-flex;
-  /* keep the inline nature of buttons */
   align-items: flex-start;
-  /* this is default */
   top: 500px;
 }
 
@@ -129,13 +130,6 @@ body {
   vertical-align: text-top;
   top: 500px;
 }
-
-/*
-.tiles {
-  object-fit: contain;
-}*/
-
-
 
 button {
   padding: 0;
@@ -180,8 +174,6 @@ p {
 }
 
 
-
-
 lh {
   font-weight: bolder;
 }
@@ -192,7 +184,6 @@ li {
 }
 
 
-/* Style the buttons that are used to open and close the accordion panel */
 .accordion {
   background-color: #eee;
   color: #444;
@@ -205,13 +196,11 @@ li {
   transition: 0.4s;
 }
 
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active,
 .accordion:hover {
   background-color: #ccc;
 }
 
-/* Style the accordion panel. Note: hidden by default */
 
 .panel {
   padding: 0 18px;
@@ -238,8 +227,6 @@ li {
 
 
 
-
-
 fieldset {
   border: 0;
 }
@@ -249,7 +236,8 @@ form {
   min-height: 200px;
   width: 400px;
   margin-top: 20px;
-
+  margin-right: auto;
+  margin-left: auto;
 }
 
 legend,
