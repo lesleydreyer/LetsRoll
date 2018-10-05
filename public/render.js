@@ -133,26 +133,26 @@ function renderViewGames(gameEvents) {
     function gamesToHtml(gameEvent) {
         let userOnlyButtons = '';
         if (gameEvent.user.id === STATE.authUser.user_id) {
-            userOnlyButtons = `<button type="button" id="goToEditGameBtn" class="button">Edit Game</button>
-                        <button type="button"  id="deleteGameBtn">Delete Game</button>`;
+            userOnlyButtons = `
+                <button type="button" id="goToEditGameBtn" class="button">Edit Game</button>
+                <button type="button"  id="deleteGameBtn">Delete Game</button>`;
         }
         let gameHTML = `
-                    <div id="game-summary" data-game-id="${gameEvent.id}">
-                    <button class="accordion">
-                        ${gameEvent.gameTitle}<br/>
-                        ${new Date(gameEvent.gameDateTime).toLocaleDateString()} 
-                    </button>
-                    <div class="panel">
-                      <p>HOST: ${gameEvent.user.username}</p>
-                      <p>DESCRIPTION: ${gameEvent.gameInfo}</p>
-                      <p>MAX PLAYERS: ${gameEvent.maxPlayers}</p>
-                      <p>ADDRESS: ${gameEvent.address}</p>
-                      <p>TIME: ${new Date(gameEvent.gameDateTime).toLocaleTimeString()}</p>
-                      <div id="userButtons">${userOnlyButtons}
-                        </div>
-                    </div>
+            <div id="game-summary" data-game-id="${gameEvent.id}">
+            <button class="accordion">
+                ${gameEvent.gameTitle}<br />
+                ${new Date(gameEvent.gameDateTime).toLocaleDateString()}
+            </button>
+            <div class="panel">
+                <p>HOST: ${gameEvent.user.username}</p>
+                <p>DESCRIPTION: ${gameEvent.gameInfo}</p>
+                <p>MAX PLAYERS: ${gameEvent.maxPlayers}</p>
+                <p>ADDRESS: ${gameEvent.address}</p>
+                <p>TIME: ${new Date(gameEvent.gameDateTime).toLocaleTimeString()}</p>
+                <div id="userButtons">${userOnlyButtons}
                 </div>
-                    `;
+            </div>
+        </div>`;
 
         return gameHTML;
     }
